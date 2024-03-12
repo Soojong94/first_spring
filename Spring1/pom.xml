@@ -133,6 +133,40 @@
 			<scope>provided</scope>
 		</dependency>
 
+		<!-- MySQL Driver (MyBatis가 Connection 하기 위한 드라이버 설치) -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.42</version>
+		</dependency>
+		<!-- Spring 에서 MyBatis 를 통해 JDBC 를 하기 위한 API -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>5.0.2.RELEASE</version>
+		</dependency>
+
+		<!-- MyBatis Connection 관리 API(DBCP) : Data Base Connection Pool -->
+		<dependency>
+			<groupId>com.zaxxer</groupId>
+			<artifactId>HikariCP</artifactId>
+			<version>3.4.1</version>
+		</dependency>
+
+		<!-- MyBatis 사용하기 위한 API -->
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+			<version>3.4.6</version>
+		</dependency>
+
+		<!-- MyBatis가 JDBC를 하기 위한 API -->
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis-spring</artifactId>
+			<version>1.3.2</version>
+		</dependency>
+
 
 	</dependencies>
 	<build>
