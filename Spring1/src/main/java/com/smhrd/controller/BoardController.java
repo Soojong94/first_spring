@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.smhrd.entity.Board;
+import com.smhrd.entity.Reply;
 import com.smhrd.mapper.BoardMapper;
 
 @Controller // 해당 클래스가 Controller 가 되기 위한 명시
@@ -47,9 +48,16 @@ public class BoardController {
 	@RequestMapping("/boardContent.do")
 	public String boardContent(@RequestParam("idx") int idx, Model model) {
 		System.out.println("게시글 상세보기 기능");
+		// 게시글 조회수 1 올리는 기능
+		mapper.boardCount(idx);
 		Board vo = mapper.boardContent(idx);
+		
+		// 해당 게시글의 댓글 가져오기
+		List<Reply> list = mapper.replyList(idx);	
+		
 		model.addAttribute("vo", vo);
-
+		model.addAttribute("list", list);
+		
 		return "boardContent";
 
 	}
@@ -95,5 +103,17 @@ public class BoardController {
 		Board vo = mapper.boardContent(idx);
 		model.addAttribute("vo", vo);
 		return "boardUpdateForm";
+	}
+	@RequestMapping("/boardUpdate.do")
+	public String boardUpdate(Board vo) {
+		System.out.println("게시글 수정 기능");
+		mapper.boardUpdate(vo);
+		return "redirect:/boardContent.do?idx="+vo.getIdx();
+	}
+	@RequestMapping("/replyInsert.do")
+	public String replyInsert(Reply vo){		
+		System.out.println("댓글 작성 기능");
+		mapper.replyInsert(vo);	
+		return "redirect:/boardContent.do?idx="+vo.getBoardnum();
 	}
 }

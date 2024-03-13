@@ -57,7 +57,7 @@
 								</td>
 							</tr>
 							<td colspan="2" align="center">
-								<button type="submit" class="btn btn-info">수정</button>
+								<button type="submit" class="btn btn-success">수정</button>
 								<button type="reset" class="btn btn-danger">취소</button> <a
 								href="boardList.do" class="btn btn-warning">목록</a>
 							</td>

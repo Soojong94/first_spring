@@ -16,9 +16,35 @@
 		(#{title}, #{content}, #{writer})
 	</insert>
 	<delete id="boardDelete" parameterType="int">
-		DELETE FROM BOARD WHERE IDX = #{idx}
+		DELETE FROM BOARD WHERE
+		IDX = #{idx}
 	</delete>
 
+	<update id="boardUpdate" parameterType="com.smhrd.entity.Board">
+		UPDATE BOARD SET
+		TITLE =
+		#{title},
+		CONTENT = #{content},
+		WRITER = #{writer}
+		WHERE IDX = #{idx}
+	</update>
 
+	<update id="boardCount" parameterType="int">
+		UPDATE BOARD SET
+		COUNT =
+		COUNT + 1
+		WHERE IDX = #{idx}
+	</update>
+
+	<insert id="replyInsert" parameterType="com.smhrd.entity.Reply">
+		INSERT INTO REPLY(BOARDNUM, WRITER, CONTENT)
+		VALUES(#{boardnum}, #{writer} , #{content} )
+	</insert>
+	
+	<select id="replyList" parameterType="int"
+	resultType="com.smhrd.entity.Reply">
+	SELECT * FROM REPLY WHERE BOARDNUM = #{idx} ORDER BY INDATE DESC
+	
+	</select>
 
 </mapper>
