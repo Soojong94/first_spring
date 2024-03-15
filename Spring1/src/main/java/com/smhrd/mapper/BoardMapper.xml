@@ -11,9 +11,9 @@
 		SELECT * FROM BOARD WHERE IDX = #{idx}
 	</select>
 	<insert id="boardInsert" parameterType="com.smhrd.entity.Board">
-		INSERT INTO BOARD (TITLE,
-		CONTENT, WRITER) VALUES
-		(#{title}, #{content}, #{writer})
+		INSERT INTO BOARD (TITLE, CONTENT, WRITER, IMGPATH) VALUES
+		(#{title}, #{content}, #{writer}, #{imgpath})
+		
 	</insert>
 	<delete id="boardDelete" parameterType="int">
 		DELETE FROM BOARD WHERE

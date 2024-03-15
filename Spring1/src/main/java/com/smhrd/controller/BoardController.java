@@ -1,9 +1,11 @@
 package com.smhrd.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.ibatis.annotations.Update;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +13,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.HttpServerErrorException;
 
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 import com.smhrd.entity.Board;
 import com.smhrd.entity.Reply;
 import com.smhrd.mapper.BoardMapper;
@@ -30,6 +35,11 @@ public class BoardController {
 	 * root context 내부의 <bean class="org.mybatis.spring.SqlSessionFactoryBean">
 	 * <property name="dataSource" ref="dataSource" /> </bean> 이 구현함
 	 */
+
+	@RequestMapping("/")
+	public String home() {
+		return "redirect:/boardList.do";
+	}
 
 	@RequestMapping("/boardList.do") // client 가 요청한 url 맵핑
 	public String boardList(Model model)
@@ -51,13 +61,13 @@ public class BoardController {
 		// 게시글 조회수 1 올리는 기능
 		mapper.boardCount(idx);
 		Board vo = mapper.boardContent(idx);
-		
+
 		// 해당 게시글의 댓글 가져오기
-		List<Reply> list = mapper.replyList(idx);	
-		
+		List<Reply> list = mapper.replyList(idx);
+
 		model.addAttribute("vo", vo);
 		model.addAttribute("list", list);
-		
+
 		return "boardContent";
 
 	}
@@ -69,7 +79,7 @@ public class BoardController {
 	}
 
 	@RequestMapping("/boardInsert.do")
-	public String boardInsert(Board vo) {
+	public String boardInsert(HttpServletRequest request) {
 
 		// 기본 생성자를 만들어야 하는 이유 - 만들지 않으면 이 아래 코드가 작동하지 않음
 		// 내부적으로 작동하는 코드
@@ -85,6 +95,33 @@ public class BoardController {
 		// vo.setTitle(writer);
 
 		System.out.println("게시글 입력 기능");
+		
+		// 파일을 서버 폴더에 저장하는 객체
+		MultipartRequest multi = null;
+		int fileMaxSize  =10 * 1024 * 10000;
+		String savePath = request.getRealPath("resources/board");
+		
+		System.out.println(savePath);
+		
+		try {
+			multi = new MultipartRequest(request, savePath, fileMaxSize, "UTF-8", new DefaultFileRenamePolicy());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		String title = multi.getParameter("title");
+		String content = multi.getParameter("content");
+		String writer = multi.getParameter("writer");
+		String imgpath = multi.getFilesystemName("imgpath");
+		
+		Board vo  = new Board();
+		vo.setTitle(title);
+		vo.setContent(content);
+		vo.setWriter(writer);
+		vo.setImgpath(imgpath);
+		
+		System.out.println(vo.toString());
 		mapper.boardInsert(vo);
 
 		return "redirect:/boardList.do";
@@ -104,16 +141,18 @@ public class BoardController {
 		model.addAttribute("vo", vo);
 		return "boardUpdateForm";
 	}
+
 	@RequestMapping("/boardUpdate.do")
 	public String boardUpdate(Board vo) {
 		System.out.println("게시글 수정 기능");
 		mapper.boardUpdate(vo);
-		return "redirect:/boardContent.do?idx="+vo.getIdx();
+		return "redirect:/boardContent.do?idx=" + vo.getIdx();
 	}
+
 	@RequestMapping("/replyInsert.do")
-	public String replyInsert(Reply vo){		
+	public String replyInsert(Reply vo) {
 		System.out.println("댓글 작성 기능");
-		mapper.replyInsert(vo);	
-		return "redirect:/boardContent.do?idx="+vo.getBoardnum();
+		mapper.replyInsert(vo);
+		return "redirect:/boardContent.do?idx=" + vo.getBoardnum();
 	}
 }

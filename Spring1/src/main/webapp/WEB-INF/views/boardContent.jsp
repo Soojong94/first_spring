@@ -36,8 +36,16 @@
 						<tr>
 							<td>내용</td>
 							<td>
-								<!-- 해당 게시글 내용이 나오게 --> ${fn:replace(vo.content, ln, "<br>")}
+								<!-- 해당 게시글 내용이 나오게 --> 
+								
+								<!--  이미지가 있는지 없는지 판단 -->
+								<c:if test = "${not empty vo.imgpath }"> 
+								<img src = "./resources/board/${vo.imgpath}">
+								<br>
+								${fn:replace(vo.content, ln, "<br>")}
+								</c:if>
 							</td>
+							
 						</tr>
 						<tr>
 							<td>작성자</td>
@@ -76,7 +84,7 @@
 
 						</tr>
 						<c:forEach items="${list}" var="vo">
-							<tr>
+							<tr id >
 								<td style="padding: 5px;" width="150px">${vo.writer}</td>
 								<td style="padding: 5px;" colspan="2">${vo.content}</td>
 							</tr>

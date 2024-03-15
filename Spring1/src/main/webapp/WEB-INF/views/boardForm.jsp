@@ -21,13 +21,17 @@
 		<div class="panel panel-default">
 			<div class="panel-heading">Board</div>
 			<div class="panel-body">
-				<form action="boardInsert.do" method = "post">
+				<form action="boardInsert.do" method = "post" enctype="multipart/form-data">
 					<table class="table">
 						<tbody>
 
 							<tr>
 								<td>제목</td>
 								<td><input type="text" name = "title" class="form-control"></td>
+							</tr>
+							<tr>
+								<td>파일</td>
+								<td><input type="file" name = "imgpath" class="form-control"></td>
 							</tr>
 							<tr>
 								<td>내용</td>
