@@ -24,8 +24,7 @@
 		UPDATE BOARD SET
 		TITLE =
 		#{title},
-		CONTENT = #{content},
-		WRITER = #{writer}
+		CONTENT = #{content}
 		WHERE IDX = #{idx}
 	</update>
 

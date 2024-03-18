@@ -20,6 +20,7 @@ import org.springframework.web.client.HttpServerErrorException;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 import com.smhrd.entity.Board;
+import com.smhrd.entity.Member;
 import com.smhrd.entity.Reply;
 import com.smhrd.mapper.BoardMapper;
 
@@ -52,7 +53,7 @@ public class BoardController {
 	}
 
 	@RequestMapping("/boardCount.do/{idx}")
-	public @ResponseBody void boardCount(@PathVariable ("idx") int idx) {
+	public @ResponseBody void boardCount(@PathVariable("idx") int idx) {
 		System.out.println("게시글 조회수 기능");
 		mapper.boardCount(idx);
 
@@ -119,7 +120,19 @@ public class BoardController {
 	public @ResponseBody void boardUpdate(Board vo) {
 		System.out.println("게시글 수정 기능");
 		mapper.boardUpdate(vo);
-		
+
+	}
+
+	@RequestMapping("/joinForm.do")
+	public String joinForm() {
+
+		return "joinForm";
+	}
+
+	@RequestMapping("/join.do")
+	public String join(Member vo) {
+
+		return null;
 	}
 }
 
