@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.annotations.Update;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -132,8 +133,38 @@ public class BoardController {
 	@RequestMapping("/join.do")
 	public String join(Member vo) {
 
-		return null;
+		mapper.join(vo);
+
+		return "redirect:/";
 	}
+
+	@RequestMapping("/loginForm.do")
+	public String loginForm() {
+
+		return "loginForm";
+	}
+
+	@RequestMapping("/login.do")
+	public String login(Member vo, HttpSession session) {
+
+		Member info = mapper.login(vo);
+		
+		if (info != null) {
+			session.setAttribute("info", info);
+		}
+		
+		return "redirect:/";
+
+	}
+	
+	@RequestMapping("/logout.do")
+	public String logout(HttpSession session) {
+		
+		session.invalidate();
+		
+		return "redirect:/";
+	}
+
 }
 
 //
